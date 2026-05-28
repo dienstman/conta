@@ -36,18 +36,10 @@
                 </div>
             </div>
             
-            <!-- Identificação do Cliente / Operador -->
-            <div class="flex flex-wrap gap-2 items-center bg-indigo-950/50 p-2 rounded-lg border border-indigo-700/50">
-                <div class="text-xs text-slate-300">
-                    <span class="block font-semibold">Operador:</span>
-                    <input type="text" id="operador-nome" placeholder="Seu Nome" class="bg-transparent border-b border-indigo-500 text-white placeholder-indigo-400 focus:outline-none focus:border-white text-xs py-0.5 w-28">
-                </div>
-                <div class="text-xs text-slate-300">
-                    <span class="block font-semibold">Cliente:</span>
-                    <input type="text" id="cliente-nome" placeholder="Nome do Cliente" class="bg-transparent border-b border-indigo-500 text-white placeholder-indigo-400 focus:outline-none focus:border-white text-xs py-0.5 w-32">
-                </div>
-                <button onclick="resetarTudo()" class="bg-red-600 hover:bg-red-500 text-white px-2.5 py-1.5 rounded text-xs font-semibold flex items-center gap-1 transition-colors">
-                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Resetar
+            <!-- Ações Rápidas -->
+            <div class="flex flex-wrap gap-2 items-center">
+                <button onclick="resetarTudo()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Resetar Análise
                 </button>
             </div>
         </div>
@@ -324,6 +316,7 @@
                                 <option value="vinculo-intermitente">Direito com Vínculo Intermitente fora de convocatória</option>
                                 <option value="vinculo-pext">Direito com Vínculo PEXT</option>
                                 <option value="guia-individual">Direito com GUIA Individual (no mês de nascimento)</option>
+                                <option value="rural">Direito com Salário-Maternidade Rural</option>
                                 <option value="caso-especifico-coord">Casos Específicos (Escritório Paga ao Cliente)</option>
                             </select>
 
@@ -343,26 +336,8 @@
                             </h3>
                             <p class="text-xs text-slate-600">Assinale todas as situações excepcionais que correspondem ao perfil desta ficha:</p>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <!-- Caso 1: Rural -->
-                                <div class="p-3 bg-white rounded-lg border border-slate-200">
-                                    <label class="flex items-start gap-2 cursor-pointer">
-                                        <input type="checkbox" id="mat-exc-rural" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-rural')">
-                                        <div class="text-xs">
-                                            <span class="font-bold text-slate-800 block">Salário Maternidade Rural</span>
-                                            <span class="text-slate-500 text-[11px]">Requer autodeclaração e provas rurais.</span>
-                                        </div>
-                                    </label>
-                                    <div id="painel-exc-rural" class="hidden mt-2 p-2 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
-                                        <p class="font-semibold text-slate-700">Comprovação Obrigatória (Min. 3 documentos):</p>
-                                        <ul class="list-disc pl-4 space-y-0.5">
-                                            <li>Autodeclaração preenchida e assinada (Indígena: ANEXO XXV | Rural: ANEXO VIII | Pescador: ANEXO IX).</li>
-                                            <li>Atividade Rural/Pescador comprovada por INCRA, DAP, notas, bloco de produtor, escritura ou docs sindicais.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <!-- Caso 2: Menor de Idade -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <!-- Caso 1: Menor de Idade -->
                                 <div class="p-3 bg-white rounded-lg border border-slate-200">
                                     <label class="flex items-start gap-2 cursor-pointer">
                                         <input type="checkbox" id="mat-exc-menor" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-menor')">
@@ -381,7 +356,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Caso 3: RG Vencido / Inválido -->
+                                <!-- Caso 2: RG Vencido / Inválido -->
                                 <div class="p-3 bg-white rounded-lg border border-slate-200">
                                     <label class="flex items-start gap-2 cursor-pointer">
                                         <input type="checkbox" id="mat-exc-rg" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-rg')">
@@ -400,7 +375,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Caso 4: Cliente saiu Gestante de Empresa -->
+                                <!-- Caso 3: Cliente saiu Gestante de Empresa -->
                                 <div class="p-3 bg-white rounded-lg border border-slate-200">
                                     <label class="flex items-start gap-2 cursor-pointer">
                                         <input type="checkbox" id="mat-exc-saida" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-saida')">
@@ -469,7 +444,7 @@
 
                 <div class="bg-slate-900 text-slate-300 p-4 rounded-xl font-mono text-xs space-y-1 h-44 overflow-y-auto whitespace-pre-wrap leading-relaxed" id="bloco-resumo">
 --- CHECKLIST DE CONTABILIZAÇÃO ---
-Preencha as informações do operador e do cliente acima para gerar as informações de auditoria de conformidade.
+Complete a checagem das etapas para gerar o resumo de conformidade.
                 </div>
             </div>
         </section>
@@ -675,15 +650,15 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
         // ETAPA 1 -> ETAPA 2
         function verificarTransicaoEtapa1() {
             const chkDados = document.getElementById('mat-1-dados').checked;
-            const chkRecados = document.getElementById('mat-1-recados').checked;
             const chkContrato = document.getElementById('mat-1-contrato').checked;
             const chkObs = document.getElementById('mat-1-obs').checked;
+            const chkRecados = document.getElementById('mat-1-recados').checked;
 
             const etapa2 = document.getElementById('etapa-maternidade-2');
             const bullet2 = document.getElementById('bullet-etapa-2');
             const barra = document.getElementById('progresso-etapa-barra');
 
-            if (chkDados && chkRecados && chkContrato && chkObs) {
+            if (chkDados && chkContrato && chkObs && chkRecados) {
                 // Habilitar Etapa 2
                 etapa2.classList.remove('hidden');
                 setTimeout(() => etapa2.classList.remove('opacity-0'), 50);
@@ -794,6 +769,21 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
                         <p class="text-slate-600 mt-1">Como o direito advém de guia individual quitada no mês de nascimento, certifique-se de que o comprovante de pagamento esteja estritamente em dia.</p>
                     `;
                     break;
+                case 'rural':
+                    classesBorda = "bg-amber-50 border-amber-300 text-amber-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="leaf" class="w-4 h-4 text-emerald-700"></i> Salário Maternidade Rural Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Comprovação Obrigatória Exigida:</p>
+                        <div class="text-slate-600 mt-1 space-y-1.5 text-xs">
+                            <p><strong>1. Autodeclaração preenchida e assinada:</strong><br>
+                            - Indígena: ANEXO XXV | - Rural: ANEXO VIII | - Pescador: ANEXO IX</p>
+                            <p><strong>2. Comprovação da atividade (Mínimo de 3 documentos):</strong><br>
+                            - <strong>Rural:</strong> INCRA, escritura de imóveis rurais, bloco de produtor rural, DAP/CAF, seguro safra, contrato de arrendamento/parceria, ou notas fiscais de vendas rurais.<br>
+                            - <strong>Pescador:</strong> Carteira de pesca profissional, documento da embarcação, registro sindical, Seguro-Defeso, etc.<br>
+                            - <strong>Indígena:</strong> Declaração oficial emitida pela FUNAI e certidão RANI.</p>
+                        </div>
+                    `;
+                    break;
                 case 'caso-especifico-coord':
                     classesBorda = "bg-rose-50 border-rose-200 text-rose-950";
                     conteudoAjuda = `
@@ -860,10 +850,6 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
                 }
             });
 
-            // Limpar inputs de texto
-            document.getElementById('operador-nome').value = "";
-            document.getElementById('cliente-nome').value = "";
-
             // Resetar Salário Maternidade
             document.getElementById('mat-1-dados').checked = false;
             document.getElementById('mat-1-recados').checked = false;
@@ -882,12 +868,10 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
             document.getElementById('mat-direito-tipo').value = "";
             document.getElementById('painel-direito-ajuda').classList.add('hidden');
 
-            document.getElementById('mat-exc-rural').checked = false;
             document.getElementById('mat-exc-menor').checked = false;
             document.getElementById('mat-exc-rg').checked = false;
             document.getElementById('mat-exc-saida').checked = false;
 
-            document.getElementById('painel-exc-rural').classList.add('hidden');
             document.getElementById('painel-exc-menor').classList.add('hidden');
             document.getElementById('painel-exc-rg').classList.add('hidden');
             document.getElementById('painel-exc-saida').classList.add('hidden');
@@ -901,8 +885,6 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
 
         // GERAR TEXTO DE RESUMO DE CONFORMIDADE PARA COPIAR
         function gerarRelatorio() {
-            const operador = document.getElementById('operador-nome').value || "Não informado";
-            const cliente = document.getElementById('cliente-nome').value || "Não informado";
             const dataHora = new Date().toLocaleString('pt-BR');
 
             // Documentação Geral Obrigatória
@@ -913,9 +895,7 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
 
             let texto = `--- CHECKLIST DE CONTABILIZAÇÃO ---\n`;
             texto += `Data/Hora: ${dataHora}\n`;
-            texto += `Operador: ${operador}\n`;
-            texto += `Cliente: ${cliente}\n`;
-            texto += `Progresso Geral Obrigatorios: ${marcadosGerais}/${totalGerais} marcados.\n`;
+            texto += `Progresso Geral Obrigatórios: ${marcadosGerais}/${totalGerais} marcados.\n`;
             texto += `------------------------------------\n`;
 
             if (abaAtiva === 'salario-maternidade') {
@@ -952,14 +932,12 @@ Preencha as informações do operador e do cliente acima para gerar as informaç
                 }
 
                 // Etapa 4 - Exceções
-                const excRural = document.getElementById('mat-exc-rural').checked;
                 const excMenor = document.getElementById('mat-exc-menor').checked;
                 const excRg = document.getElementById('mat-exc-rg').checked;
                 const excSaida = document.getElementById('mat-exc-saida').checked;
 
-                if (excRural || excMenor || excRg || excSaida) {
+                if (excMenor || excRg || excSaida) {
                     texto += `[ETAPA 4: EXCEÇÕES APLICADAS]\n`;
-                    if (excRural) texto += ` - Salário Maternidade Rural: Marcado (Mínimo de 3 documentos de atividade coletados/anexados + Autodeclaração)\n`;
                     if (excMenor) texto += ` - Cliente Menor de Idade: Marcado (Identificação e Assinatura do Responsável Legal anexado)\n`;
                     if (excRg) texto += ` - RG Vencido/Inválido: Marcado (Abertura de protocolo de renovação CIN realizado + print)\n`;
                     if (excSaida) texto += ` - Saída Recente da Empresa: Marcado (Verificação de rescisão / justa causa efetuada)\n`;
