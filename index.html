@@ -287,16 +287,66 @@
                                 </label>
                             </div>
 
-                            <!-- Condicional de Previstos -->
-                            <div id="mat-cond-previsto" class="hidden p-3 bg-white rounded-lg border border-amber-100 space-y-2 mt-2">
-                                <div class="text-xs text-amber-800 font-bold flex items-center gap-1">
-                                    <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i> Documentação de Gestação (Trimestres)
+                            <!-- Condicional de Previstos com Calculadora Gestacional -->
+                            <div id="mat-cond-previsto" class="hidden p-4 bg-white rounded-xl border border-indigo-200 space-y-4 mt-2">
+                                <div class="text-xs text-indigo-800 font-bold flex items-center gap-1.5 pb-2 border-b border-indigo-50">
+                                    <i data-lucide="calculator" class="w-4 h-4 text-indigo-600"></i> Calculadora de Idade Gestacional e Trimestre
                                 </div>
-                                <p class="text-[11px] text-slate-500">Confira exames, ultrassons e atestados válidos para o respectivo trimestre de gestação:</p>
-                                <label class="flex items-center gap-2.5 cursor-pointer">
-                                    <input type="checkbox" id="mat-check-gestacao" class="rounded text-amber-600 focus:ring-amber-500 w-4 h-4" onchange="verificarTransicaoEtapa2()">
-                                    <span class="text-xs text-slate-700 font-medium">Confirmo os Comprovantes de Gestação de acordo com a tabela de trimestre.</span>
-                                </label>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Data de Hoje:</label>
+                                        <input type="date" id="gest-data-hoje" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-indigo-500 focus:border-indigo-500" onchange="calcularIdadeGestacional()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Data Prevista do Parto (DPP):</label>
+                                        <input type="date" id="gest-data-dpp" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-indigo-500 focus:border-indigo-500" onchange="calcularIdadeGestacional()">
+                                    </div>
+                                </div>
+
+                                <!-- Resultados Matemáticos -->
+                                <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-lg border border-slate-100 text-center">
+                                    <div>
+                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Dias p/ Parto</span>
+                                        <span id="res-dias-parto" class="text-base font-bold text-indigo-900">-</span>
+                                    </div>
+                                    <div>
+                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Semanas Faltam</span>
+                                        <span id="res-semanas-restantes" class="text-base font-bold text-indigo-900">-</span>
+                                    </div>
+                                    <div>
+                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Semana Atual</span>
+                                        <span id="res-semana-atual" class="text-base font-bold text-indigo-900">-</span>
+                                    </div>
+                                </div>
+
+                                <!-- Trimestre Descoberto -->
+                                <div id="gest-resultado-trimestre" class="hidden p-3 rounded-lg text-center font-bold text-xs uppercase tracking-wide">
+                                    <!-- Preenchido via Javascript -->
+                                </div>
+
+                                <!-- Checklist do Trimestre correspondente (Foto 3) -->
+                                <div id="gest-documentos-trimestre" class="hidden p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                                    <span class="text-xs font-bold text-slate-800 block border-b border-slate-200 pb-1.5">Checklist de Documentos do Trimestre:</span>
+                                    <div id="gest-documentos-checks" class="space-y-1.5 text-xs text-slate-700">
+                                        <!-- Checklist dinâmico via JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Validação das Imagens e Regras Gerais (Foto 3) -->
+                                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                                    <span class="text-xs font-bold text-slate-800 block border-b border-slate-200 pb-1.5">Observações Gerais de Imagens e DPP:</span>
+                                    <div class="space-y-1.5 text-xs text-slate-700">
+                                        <label class="flex items-start gap-2.5 cursor-pointer">
+                                            <input type="checkbox" id="gest-check-legibilidade" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5" onchange="verificarTransicaoEtapa2()">
+                                            <span>As fotos dos documentos estão nítidas e legíveis (sem cortes, tremidos ou rasuras)?</span>
+                                        </label>
+                                        <label class="flex items-start gap-2.5 cursor-pointer">
+                                            <input type="checkbox" id="gest-check-dpp-doc" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5" onchange="verificarTransicaoEtapa2()">
+                                            <span>A DPP consta em USG, ECO, Laudo Médico ou Carteirinha de Gestante recente da cliente?</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -549,10 +599,15 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
         // Estado do Aplicativo
         let abaAtiva = 'salario-maternidade';
         let tipoCasoMaternidade = ''; // 'nascido' ou 'previsto'
+        let gestanteTrimestre = 0; // 1, 2 ou 3
 
         // Inicializar aplicação
         window.onload = function() {
             lucide.createIcons();
+            // Preencher data de hoje padrão na calculadora gestacional
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('gest-data-hoje').value = hoje;
+            
             atualizarProgressoGeral();
             gerarRelatorio();
         }
@@ -681,7 +736,15 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
 
             // Resetar checks das condicionais de nascimento ao alternar
             document.getElementById('mat-check-certidao').checked = false;
-            document.getElementById('mat-check-gestacao').checked = false;
+            
+            // Resetar calculadora
+            document.getElementById('gest-data-dpp').value = "";
+            document.getElementById('res-dias-parto').innerText = "-";
+            document.getElementById('res-semanas-restantes').innerText = "-";
+            document.getElementById('res-semana-atual').innerText = "-";
+            document.getElementById('gest-resultado-trimestre').className = "hidden";
+            document.getElementById('gest-documentos-trimestre').classList.add('hidden');
+            gestanteTrimestre = 0;
 
             if (tipo === 'nascido') {
                 condNascido.classList.remove('hidden');
@@ -694,10 +757,133 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
             verificarTransicaoEtapa2();
         }
 
+        // CÁLCULO DA IDADE GESTACIONAL (Conforme regras fornecidas)
+        function calcularIdadeGestacional() {
+            const dataHojeVal = document.getElementById('gest-data-hoje').value;
+            const dataDppVal = document.getElementById('gest-data-dpp').value;
+
+            if (!dataHojeVal || !dataDppVal) return;
+
+            const dataHoje = new Date(dataHojeVal);
+            const dataDpp = new Date(dataDppVal);
+
+            // 1. Diferença em dias
+            const diferencaTempo = dataDpp - dataHoje;
+            const diasFaltam = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+
+            if (diasFaltam < 0) {
+                document.getElementById('res-dias-parto').innerText = "Data Passada";
+                document.getElementById('res-semanas-restantes').innerText = "0";
+                document.getElementById('res-semana-atual').innerText = "40+";
+                gestanteTrimestre = 3;
+                atualizarDocumentosTrimestre();
+                return;
+            }
+
+            // 2. Semanas Restantes (Dias que faltam dividido por 7)
+            const semanasRestantes = Math.round(diasFaltam / 7);
+
+            // 3. Semana Atual (40 - semanas restantes)
+            let semanaAtual = 40 - semanasRestantes;
+            if (semanaAtual < 1) semanaAtual = 1;
+            if (semanaAtual > 40) semanaAtual = 40;
+
+            // Renderizar na tela
+            document.getElementById('res-dias-parto').innerText = diasFaltam;
+            document.getElementById('res-semanas-restantes').innerText = semanasRestantes;
+            document.getElementById('res-semana-atual').innerText = semanaAtual;
+
+            // 4. Determinar o Trimestre (Conforme imagem 2)
+            // 1º Trimestre: 1ª a 13ª semana
+            // 2º Trimestre: 14ª a 26ª semana
+            // 3º Trimestre: 27ª a 40ª semana
+            const resTrimestre = document.getElementById('gest-resultado-trimestre');
+            resTrimestre.classList.remove('hidden');
+
+            if (semanaAtual >= 1 && semanaAtual <= 13) {
+                gestanteTrimestre = 1;
+                resTrimestre.className = "p-3 rounded-lg text-center font-bold text-xs uppercase tracking-wide bg-pink-100 text-pink-800 border border-pink-200";
+                resTrimestre.innerHTML = `<i data-lucide="flower" class="w-4 h-4 inline mr-1"></i> Identificado: 1º Trimestre (${semanaAtual}ª Semana)`;
+            } else if (semanaAtual >= 14 && semanaAtual <= 26) {
+                gestanteTrimestre = 2;
+                resTrimestre.className = "p-3 rounded-lg text-center font-bold text-xs uppercase tracking-wide bg-purple-100 text-purple-800 border border-purple-200";
+                resTrimestre.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 inline mr-1"></i> Identificado: 2º Trimestre (${semanaAtual}ª Semana)`;
+            } else {
+                gestanteTrimestre = 3;
+                resTrimestre.className = "p-3 rounded-lg text-center font-bold text-xs uppercase tracking-wide bg-indigo-100 text-indigo-800 border border-indigo-200";
+                resTrimestre.innerHTML = `<i data-lucide="baby" class="w-4 h-4 inline mr-1"></i> Identificado: 3º Trimestre (${semanaAtual}ª Semana)`;
+            }
+
+            lucide.createIcons();
+            atualizarDocumentosTrimestre();
+            verificarTransicaoEtapa2();
+        }
+
+        // ATUALIZA CHECKLIST DE DOCUMENTOS CONFORME TRIMESTRE (Conforme imagem 3)
+        function atualizarDocumentosTrimestre() {
+            const containerDoc = document.getElementById('gest-documentos-trimestre');
+            const containerChecks = document.getElementById('gest-documentos-checks');
+            containerDoc.classList.remove('hidden');
+            containerChecks.innerHTML = "";
+
+            let docs = [];
+
+            if (gestanteTrimestre === 1) {
+                docs = [
+                    { id: "gest-doc-b40", label: "Beta com menos de 40 dias;" },
+                    { id: "gest-doc-u30", label: "USG com menos de 30 dias;" },
+                    { id: "gest-doc-b40c45", label: "Beta com mais de 40 dias + Carteira de gestante com acompanhamento menor de 45 dias;" },
+                    { id: "gest-doc-b40usg", label: "Beta com mais de 40 dias + USG marcada;" },
+                    { id: "gest-doc-b40sol", label: "Beta com mais de 40 dias + Solicitação de exames ou exames realizados após o Beta;" },
+                    { id: "gest-doc-cartdpp", label: "Carteira de gestante com DPP e acompanhamento com menos de 45 dias + Solicitação ou agendamento de USG;" },
+                    { id: "gest-doc-usg30", label: "USG com mais de 30 dias + Carteira de gestante com DPP e acompanhamentos com menos de 45 dias." }
+                ];
+            } else if (gestanteTrimestre === 2) {
+                docs = [
+                    { id: "gest-doc-u2_30", label: "USG com menos de 30 dias;" },
+                    { id: "gest-doc-u2_30c45", label: "USG com mais de 30 dias + Carteira de gestante com DPP e acompanhamentos com menos de 45 dias;" },
+                    { id: "gest-doc-b2_30", label: "Beta com menos de 30 dias + Carteira de gestante com acompanhamentos com menos de 45 dias + Solicitação ou agendamento de USG." }
+                ];
+            } else if (gestanteTrimestre === 3) {
+                docs = [
+                    { id: "gest-doc-u3_24", label: "USG com IG de 24 semanas;" },
+                    { id: "gest-doc-u3_24d60", label: "USG menor que 24 semanas dentro de 60 dias + Carteira de gestante com acompanhamento dentro de 45 dias." }
+                ];
+            }
+
+            // Renderizar checklist
+            docs.forEach((d, index) => {
+                const labelCompleto = `<strong>Opção ${index + 1}:</strong> ${d.label}`;
+                containerChecks.innerHTML += `
+                    <label class="flex items-start gap-2.5 cursor-pointer p-2 bg-white rounded border border-slate-200 hover:border-indigo-300 transition-colors">
+                        <input type="radio" name="documento-gestante-opcao" id="${d.id}" class="mt-0.5 text-indigo-600 focus:ring-indigo-500 w-4 h-4" onchange="verificarTransicaoEtapa2()">
+                        <span>${labelCompleto}</span>
+                    </label>
+                `;
+            });
+        }
+
         // ETAPA 2 -> ETAPA 3
         function verificarTransicaoEtapa2() {
             const certidaoOk = document.getElementById('mat-check-certidao').checked;
-            const gestacaoOk = document.getElementById('mat-check-gestacao').checked;
+
+            // Validação de gestante (calculadora e regras da Foto 3)
+            let gestanteOk = false;
+            if (tipoCasoMaternidade === 'previsto' && gestanteTrimestre > 0) {
+                const legibilidadeOk = document.getElementById('gest-check-legibilidade').checked;
+                const dppDocOk = document.getElementById('gest-check-dpp-doc').checked;
+                
+                // Precisa ter selecionado pelo menos uma das opções de documento do trimestre
+                const opcoesDocs = document.getElementsByName('documento-gestante-opcao');
+                let docSelecionado = false;
+                opcoesDocs.forEach(opt => {
+                    if (opt.checked) docSelecionado = true;
+                });
+
+                if (legibilidadeOk && dppDocOk && docSelecionado) {
+                    gestanteOk = true;
+                }
+            }
 
             const etapa3 = document.getElementById('etapa-maternidade-3');
             const bullet3 = document.getElementById('bullet-etapa-3');
@@ -705,7 +891,7 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
 
             let transicao = false;
             if (tipoCasoMaternidade === 'nascido' && certidaoOk) transicao = true;
-            if (tipoCasoMaternidade === 'previsto' && gestacaoOk) transicao = true;
+            if (tipoCasoMaternidade === 'previsto' && gestanteOk) transicao = true;
 
             if (transicao) {
                 etapa3.classList.remove('hidden');
@@ -773,7 +959,7 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                     classesBorda = "bg-amber-50 border-amber-300 text-amber-900";
                     conteudoAjuda = `
                         <div class="font-bold flex items-center gap-1.5"><i data-lucide="leaf" class="w-4 h-4 text-emerald-700"></i> Salário Maternidade Rural Selecionado</div>
-                        <p class="text-slate-700 mt-1 font-semibold">Comprovação Obrigatória Exigida:</p>
+                        <p class="text-slate-700 mt-1 font-semibold">Comprovação Obrigatória Exigida (Rural/Indígena/Pescador):</p>
                         <div class="text-slate-600 mt-1 space-y-1.5 text-xs">
                             <p><strong>1. Autodeclaração preenchida e assinada:</strong><br>
                             - Indígena: ANEXO XXV | - Rural: ANEXO VIII | - Pescador: ANEXO IX</p>
@@ -845,7 +1031,7 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
             // Desmarcar checks de biometria
             const checkBiometria = document.querySelectorAll('input[type="checkbox"]');
             checkBiometria.forEach(chk => {
-                if (chk.id.startsWith('mat-') || chk.id.startsWith('gen-')) {
+                if (chk.id.startsWith('mat-') || chk.id.startsWith('gen-') || chk.id.startsWith('gest-')) {
                     chk.checked = false;
                 }
             });
@@ -863,7 +1049,18 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
             document.getElementById('mat-cond-nascido').classList.add('hidden');
             document.getElementById('mat-cond-previsto').classList.add('hidden');
             document.getElementById('mat-check-certidao').checked = false;
-            document.getElementById('mat-check-gestacao').checked = false;
+
+            // Resetar Calculadora
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('gest-data-hoje').value = hoje;
+            document.getElementById('gest-data-dpp').value = "";
+            document.getElementById('res-dias-parto').innerText = "-";
+            document.getElementById('res-semanas-restantes').innerText = "-";
+            document.getElementById('res-semana-atual').innerText = "-";
+            document.getElementById('gest-resultado-trimestre').className = "hidden";
+            document.getElementById('gest-documentos-trimestre').classList.add('hidden');
+            document.getElementById('gest-documentos-checks').innerHTML = "";
+            gestanteTrimestre = 0;
 
             document.getElementById('mat-direito-tipo').value = "";
             document.getElementById('painel-direito-ajuda').classList.add('hidden');
@@ -919,8 +1116,19 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                         const certOk = document.getElementById('mat-check-certidao').checked;
                         texto += ` - Certidão de Nascimento anexada: ${certOk ? "SIM" : "PENDENTE"}\n\n`;
                     } else {
-                        const gestOk = document.getElementById('mat-check-gestacao').checked;
-                        texto += ` - Documentos de Gestante conformidade trimestre: ${gestOk ? "SIM" : "PENDENTE"}\n\n`;
+                        const semanaAtual = document.getElementById('res-semana-atual').innerText;
+                        texto += ` - Idade Gestacional Atual: ${semanaAtual}ª Semana (${gestanteTrimestre}º Trimestre)\n`;
+                        
+                        // Encontrar qual opção de documento do trimestre está marcada
+                        const opcoesDocs = document.getElementsByName('documento-gestante-opcao');
+                        let docEscolhido = "Nenhum documento selecionado";
+                        opcoesDocs.forEach(opt => {
+                            if (opt.checked) {
+                                docEscolhido = opt.nextElementSibling.innerText;
+                            }
+                        });
+                        texto += ` - Comprovação de Gestante: [Conforme]\n`;
+                        texto += ` - Documento Analisado: ${docEscolhido}\n\n`;
                     }
                 }
 
@@ -966,7 +1174,20 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                                      document.getElementById('mat-1-recados').checked && 
                                      document.getElementById('mat-1-contrato').checked && 
                                      document.getElementById('mat-1-obs').checked;
-                if (!etapa1Pronta || !tipoCasoMaternidade || !document.getElementById('mat-direito-tipo').value) {
+
+                let etapa2Pronta = false;
+                if (tipoCasoMaternidade === 'nascido') {
+                    etapa2Pronta = document.getElementById('mat-check-certidao').checked;
+                } else if (tipoCasoMaternidade === 'previsto') {
+                    const legibilidadeOk = document.getElementById('gest-check-legibilidade').checked;
+                    const dppDocOk = document.getElementById('gest-check-dpp-doc').checked;
+                    const opcoesDocs = document.getElementsByName('documento-gestante-opcao');
+                    let docSelecionado = false;
+                    opcoesDocs.forEach(opt => { if (opt.checked) docSelecionado = true; });
+                    etapa2Pronta = legibilidadeOk && dppDocOk && docSelecionado;
+                }
+
+                if (!etapa1Pronta || !etapa2Pronta || !document.getElementById('mat-direito-tipo').value) {
                     pendencias = true;
                 }
             } else {
