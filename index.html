@@ -51,7 +51,7 @@
         <section class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-fit space-y-5">
             <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
                 <i data-lucide="shield-alert" class="w-5 h-5 text-amber-600"></i>
-                <h2 class="font-bold text-slate-800 text-base">Documentos Obrigatórios</h2>
+                <h2 class="font-bold text-slate-800 text-base">Obrigatórios Gerais</h2>
                 <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ml-auto">Todos os Processos</span>
             </div>
 
@@ -86,7 +86,7 @@
                 </label>
                 <label class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
                     <input type="checkbox" class="mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" onchange="atualizarProgressoGeral()">
-                    <span class="text-xs text-slate-600"><strong class="text-slate-800">7. PRINT da Rede Social:</strong> Em anexo em arquivos.</span>
+                    <span class="text-xs text-slate-600"><strong class="text-slate-800">7. PRINT da Rede Social:</strong> Enexado no histórico.</span>
                 </label>
                 <label class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
                     <input type="checkbox" class="mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" onchange="atualizarProgressoGeral()">
@@ -118,13 +118,19 @@
                     <input type="checkbox" class="mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" onchange="atualizarProgressoGeral()">
                     <span class="text-xs text-slate-600"><strong class="text-slate-800">14. Atualizar Meu INSS/GOV:</strong> Realizado antes do envio.</span>
                 </label>
+                <div class="p-2 bg-slate-50 rounded-lg border border-slate-100 space-y-1">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" class="mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" onchange="atualizarProgressoGeral()">
+                        <span class="text-xs text-slate-600"><strong class="text-slate-800">15. Confirmar Dados Divergentes:</strong> Anexar certidão de nascimento ou casamento para atualização cadastral caso haja dados divergentes.</span>
+                    </label>
+                </div>
             </div>
 
             <!-- Progresso Geral de Documentação Obrigatória -->
             <div class="pt-4 border-t border-slate-100">
                 <div class="flex justify-between text-xs font-semibold text-slate-500 mb-1">
                     <span>Progresso Obrigatórios:</span>
-                    <span id="txt-progresso-geral">0/14 (0%)</span>
+                    <span id="txt-progresso-geral">0/15 (0%)</span>
                 </div>
                 <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                     <div id="bar-progresso-geral" class="bg-emerald-500 h-full w-0 progress-bar"></div>
@@ -250,7 +256,7 @@
                                 </label>
                                 <label class="flex items-start gap-3 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:border-indigo-300">
                                     <input type="checkbox" id="mat-1-obs" class="mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" onchange="verificarTransicaoEtapa1()">
-                                    <span class="text-xs text-slate-700">As observações inseridas pela analista estão completas e seguem o padrão exigido?</span>
+                                    <span class="text-xs text-slate-700">As observações inseridas pela analista de vendas estão completas e seguem o padrão exigido?</span>
                                 </label>
                             </div>
                         </div>
@@ -311,11 +317,11 @@
                                         <span id="res-dias-parto" class="text-base font-bold text-indigo-900">-</span>
                                     </div>
                                     <div>
-                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Semanas restantes</span>
+                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Semanas Faltam</span>
                                         <span id="res-semanas-restantes" class="text-base font-bold text-indigo-900">-</span>
                                     </div>
                                     <div>
-                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Semana atual</span>
+                                        <span class="block text-[10px] text-slate-500 font-bold uppercase">Semana Atual</span>
                                         <span id="res-semana-atual" class="text-base font-bold text-indigo-900">-</span>
                                     </div>
                                 </div>
@@ -366,6 +372,12 @@
                                 <option value="vinculo-intermitente">Direito com Vínculo Intermitente fora de convocatória</option>
                                 <option value="vinculo-pext">Direito com Vínculo PEXT</option>
                                 <option value="guia-individual">Direito com GUIA Individual (no mês de nascimento)</option>
+                                <option value="sine-seguro">Direito com Sine e Seguro-Desemprego</option>
+                                <option value="baixa-renda">Caso de Baixa Renda</option>
+                                <option value="reintegracao">Caso de Reintegração</option>
+                                <option value="processo-trabalhista">Caso de Processo Trabalhista</option>
+                                <option value="mei-cooperativa">Caso de MEI ou Cooperativa</option>
+                                <option value="vinculo-aberto">Casos de Vínculo em aberto</option>
                                 <option value="rural">Direito com Salário-Maternidade Rural</option>
                                 <option value="caso-especifico-coord">Casos Específicos (Escritório Paga ao Cliente)</option>
                             </select>
@@ -386,7 +398,7 @@
                             </h3>
                             <p class="text-xs text-slate-600">Assinale todas as situações excepcionais que correspondem ao perfil desta ficha:</p>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 <!-- Caso 1: Menor de Idade -->
                                 <div class="p-3 bg-white rounded-lg border border-slate-200">
                                     <label class="flex items-start gap-2 cursor-pointer">
@@ -400,8 +412,8 @@
                                         <p class="font-semibold text-slate-700">Regras de Menor:</p>
                                         <ul class="list-disc pl-4 space-y-0.5">
                                             <li>Anexar o RG do Responsável Legal.</li>
-                                            <li>Contrato assinado pelo responsável informando dados de representação legal.</li>
-                                            <li>Se o RG do responsável estiver rasurado ou vencido: agendar o RG.</li>
+                                            <li>Contrato assinado pelo responsável informando dados de representante legal.</li>
+                                            <li>Se o RG do responsável estiver rasurado ou vencido: seguir protocolo de agendamento de RG.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -418,9 +430,11 @@
                                     <div id="painel-exc-rg" class="hidden mt-2 p-2 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
                                         <p class="font-semibold text-slate-700">Exigências:</p>
                                         <ul class="list-disc pl-4 space-y-0.5">
-                                            <li>Ciente sobre a necessidade de renovação e agendamento de nova CIN.</li>
-                                            <li>Comprovante / print do agendamento ou tentativa caso não haja vagas.</li>
-                                            <li>Solicitar CTPS para suprir identificação.</li>
+                                            <li>Ciente sobre a necessidade de renovação.</li>
+                                            <li>Agendar emissão da nova CIN (anexar print enviado para a cliente).</li>
+                                            <li>Verificar se possui certidão de nascimento/casamento (se não, orientar nova via).</li>
+                                            <li>Sem vagas: anexar print da tentativa e combinar comparecimento presencial.</li>
+                                            <li>Solicitar CTPS para auxiliar.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -430,18 +444,94 @@
                                     <label class="flex items-start gap-2 cursor-pointer">
                                         <input type="checkbox" id="mat-exc-saida" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-saida')">
                                         <div class="text-xs">
-                                            <span class="font-bold text-slate-800 block">Saída Recente da Empresa (Gestante)</span>
+                                            <span class="font-bold text-slate-800 block">Saída Gestante da Empresa</span>
                                             <span class="text-slate-500 text-[11px]">Justa Causa / Sem Justa causa.</span>
                                         </div>
                                     </label>
                                     <div id="painel-exc-saida" class="hidden mt-2 p-2 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
                                         <p class="font-semibold text-slate-700">Regras de Desligamento:</p>
                                         <ul class="list-disc pl-4 space-y-0.5">
-                                            <li>Saída de até 3 meses: registrar motivo da saída.</li>
-                                            <li>Acima de 4 meses: anexar comprovação (ex. justa causa exige ciente de não processar a empresa; sem justa causa exige ciente e rescisão).</li>
+                                            <li>Saída até 3 meses: registrar motivo da saída.</li>
+                                            <li>Saída acima de 4 meses: anexar comprovação do motivo do desligamento.</li>
+                                            <li>Justa causa: ciente da cliente de que não processará a empresa.</li>
+                                            <li>Demissão sem justa causa (acima de 4 meses): anexar ciente de não processar a empresa e a rescisão de contrato para comprovar os valores recebidos.</li>
                                         </ul>
                                     </div>
                                 </div>
+
+                                <!-- Caso 4: Adoção -->
+                                <div class="p-3 bg-white rounded-lg border border-slate-200">
+                                    <label class="flex items-start gap-2 cursor-pointer">
+                                        <input type="checkbox" id="mat-exc-adocao" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-adocao')">
+                                        <div class="text-xs">
+                                            <span class="font-bold text-slate-800 block">Adoção</span>
+                                            <span class="text-slate-500 text-[11px]">Termo de guarda ou nova certidão.</span>
+                                        </div>
+                                    </label>
+                                    <div id="painel-exc-adocao" class="hidden mt-2 p-2 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
+                                        <p class="font-semibold text-slate-700">Regras de Adoção:</p>
+                                        <ul class="list-disc pl-4 space-y-0.5">
+                                            <li>Anexar termo de guarda para fins de adoção ou nova certidão de nascimento.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Caso 5: Casos Presenciais -->
+                                <div class="p-3 bg-white rounded-lg border border-slate-200">
+                                    <label class="flex items-start gap-2 cursor-pointer">
+                                        <input type="checkbox" id="mat-exc-presencial" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-presencial')">
+                                        <div class="text-xs">
+                                            <span class="font-bold text-slate-800 block">Presencial (RJ, SC, Montenegro, Caxias)</span>
+                                            <span class="text-slate-500 text-[11px]">Assinaturas físicas e coordenação.</span>
+                                        </div>
+                                    </label>
+                                    <div id="painel-exc-presencial" class="hidden mt-2 p-2 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
+                                        <p class="font-semibold text-slate-700">Casos Presenciais:</p>
+                                        <ul class="list-disc pl-4 space-y-0.5">
+                                            <li>Contrato e procuração assinados fisicamente.</li>
+                                            <li>Se morar perto do escritório, mas se recusar a comparecer, registrar observação do coordenador, confirmando ciência do caso e justificativa.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Caso 6: Contratos MG -->
+                                <div class="p-3 bg-white rounded-lg border border-slate-200">
+                                    <label class="flex items-start gap-2 cursor-pointer">
+                                        <input type="checkbox" id="mat-exc-mg" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-mg')">
+                                        <div class="text-xs">
+                                            <span class="font-bold text-slate-800 block">Contratos MG</span>
+                                            <span class="text-slate-500 text-[11px]">Print de envio e previsões.</span>
+                                        </div>
+                                    </label>
+                                    <div id="painel-exc-mg" class="hidden mt-2 p-2 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
+                                        <p class="font-semibold text-slate-700">Contratos MG:</p>
+                                        <ul class="list-disc pl-4 space-y-0.5">
+                                            <li>Contrato e procuração anexados no processo.</li>
+                                            <li>Print comprovando o envio dos documentos para a cliente.</li>
+                                            <li>Registrar previsão de assinatura e envio dos termos.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Caso 7: Casos de DARF de Complementação -->
+                                <div class="p-3 bg-white rounded-lg border border-slate-200 md:col-span-2 lg:col-span-3">
+                                    <label class="flex items-start gap-2 cursor-pointer">
+                                        <input type="checkbox" id="mat-exc-darf" class="mt-0.5 rounded text-indigo-600" onchange="toggleExcPanel('painel-exc-darf')">
+                                        <div class="text-xs">
+                                            <span class="font-bold text-slate-800 block">Casos de DARF de Complementação</span>
+                                            <span class="text-slate-500 text-[11px]">DARF, ciente, cooperativa e previsão.</span>
+                                        </div>
+                                    </label>
+                                    <div id="painel-exc-darf" class="hidden mt-2 p-2.5 bg-slate-50 rounded border border-slate-100 space-y-1 text-[11px] text-slate-600">
+                                        <p class="font-semibold text-slate-700">Protocolo DARF:</p>
+                                        <ul class="list-disc pl-4 space-y-1">
+                                            <li>DARF anexada e print de envio para a cliente.</li>
+                                            <li>Cliente ciente da complementação e ciente da previsão de pagamento.</li>
+                                            <li><strong>Ajuste de ficha / Cooperativas:</strong> Quando o cadastro exigir ajuste para reduzir o valor da DARF, o Setor de Contabilizações gera e envia no grupo, mas o ciente da cliente já deve estar anexado no processo.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="p-3 bg-indigo-50 rounded-lg flex items-center justify-between border border-indigo-100 mt-4">
@@ -513,13 +603,16 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                 titulo: "Auxílio Reclusão",
                 categoria: "Análise Previdenciária",
                 itens: [
-                    { id: "rec-1", desc: "RG frente e verso do responsável legal (para menores de 18 anos).", obs: "Obrigatório conferir legibilidade." },
-                    { id: "rec-2", desc: "Termo de responsabilidade devidamente assinado pelo responsável.", obs: "Necessário caso o requerente seja menor de idade." },
-                    { id: "rec-3", desc: "CNIS da pessoa reclusa ou outra comprovação robusta do direito.", obs: "Verificar qualidade de segurado na data da prisão." },
-                    { id: "rec-4", desc: "Contrato físico e procuração assinados.", obs: "Não serão aceitos documentos sem assinatura." },
-                    { id: "rec-5", desc: "Certidão de Recolhimento Prisional atualizada.", obs: "Emitida pelo estabelecimento prisional com data recente." },
-                    { id: "rec-6", desc: "Certidão judicial (orientar a cliente e enviar print).", obs: "Provar trâmite ou sentença se necessário." },
-                    { id: "rec-7", desc: "Declaração de cárcere.", obs: "Obrigatória para manter a conformidade do processo." }
+                    { id: "rec-1", desc: "Carência Mínima Verificada (24 meses de contribuição):", obs: "Obrigatório confirmar se possui 24 meses de contribuição pagas acima do salário mínimo vigente na época." },
+                    { id: "rec-2", desc: "Qualidade de Segurado mantida ou recuperada (mínimo de 12 meses):", obs: "Se perdeu a qualidade, verificar se recolheu ao menos 12 contribuições para recuperar antes da prisão." },
+                    { id: "rec-3", desc: "Critério de Baixa Renda (Média das últimas 12 contribuições):", obs: "A média dos últimos 12 salários de contribuição apurados em até 1 ano antes da prisão NÃO pode ultrapassar o teto limite estabelecido para 2026." },
+                    { id: "rec-4", desc: "RG frente e verso do responsável legal (para menores de 18 anos).", obs: "Obrigatório conferir legibilidade." },
+                    { id: "rec-5", desc: "Termo de responsabilidade devidamente assinado pelo responsável.", obs: "Necessário caso o requerente seja menor de idade." },
+                    { id: "rec-6", desc: "CNIS da pessoa reclusa ou outra comprovação robusta do direito.", obs: "Verificar qualidade de segurado na data da prisão." },
+                    { id: "rec-7", desc: "Contrato físico e procuração assinados.", obs: "Não serão aceitos documentos sem assinatura." },
+                    { id: "rec-8", desc: "Certidão de Recolhimento Prisional atualizada.", obs: "Emitida pelo estabelecimento prisional com data recente." },
+                    { id: "rec-9", desc: "Certidão judicial (orientar a cliente e enviar print).", obs: "Provar trâmite ou sentença se necessário." },
+                    { id: "rec-10", desc: "Declaração de cárcere.", obs: "Obrigatória para manter a conformidade do processo." }
                 ]
             },
             'auxilio-idoso': {
@@ -794,9 +887,6 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
             document.getElementById('res-semana-atual').innerText = semanaAtual;
 
             // 4. Determinar o Trimestre (Conforme imagem 2)
-            // 1º Trimestre: 1ª a 13ª semana
-            // 2º Trimestre: 14ª a 26ª semana
-            // 3º Trimestre: 27ª a 40ª semana
             const resTrimestre = document.getElementById('gest-resultado-trimestre');
             resTrimestre.classList.remove('hidden');
 
@@ -955,6 +1045,68 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                         <p class="text-slate-600 mt-1">Como o direito advém de guia individual quitada no mês de nascimento, certifique-se de que o comprovante de pagamento esteja estritamente em dia.</p>
                     `;
                     break;
+                case 'sine-seguro':
+                    classesBorda = "bg-blue-50 border-blue-200 text-blue-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i> Sine e Seguro-Desemprego Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Comprovação de verificação de oportunidade, contendo nome da cliente.</li>
+                            <li>Comprovante de recebimento do seguro-desemprego, indicando parcelas pagas e nome da cliente.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'baixa-renda':
+                    classesBorda = "bg-teal-50 border-teal-200 text-teal-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="users" class="w-4 h-4 text-teal-600"></i> Caso de Baixa Renda Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Cliente ciente de possível complementação.</li>
+                            <li>CADÚNICO atualizado (formulário completo, não apenas resumo).</li>
+                        </ul>
+                    `;
+                    break;
+                case 'reintegracao':
+                    classesBorda = "bg-orange-50 border-orange-200 text-orange-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="git-pull-request" class="w-4 h-4 text-orange-600"></i> Caso de Reintegração Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Anexar as duas rescisões de contrato.</li>
+                            <li><strong>Exceção:</strong> em casos de pedido de demissão ou justa causa, o FGTS com código de afastamento é plenamente aceito como comprovação.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'processo-trabalhista':
+                    classesBorda = "bg-purple-50 border-purple-200 text-purple-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="briefcase" class="w-4 h-4 text-purple-600"></i> Caso de Processo Trabalhista Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Processo na íntegra devidamente anexado.</li>
+                            <li>Se houver solicitação de estabilidade gestacional, a ficha segue obrigatoriamente como <strong>teste</strong>.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'mei-cooperativa':
+                    classesBorda = "bg-violet-50 border-violet-200 text-violet-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="store" class="w-4 h-4 text-violet-600"></i> Caso de MEI ou Cooperativa Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Cliente formalmente ciente de não realizar contribuições nos 120 dias seguintes ao nascimento do bebê.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'vinculo-aberto':
+                    classesBorda = "bg-rose-50 border-rose-200 text-rose-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="unlock" class="w-4 h-4 text-rose-600"></i> Vínculo em Aberto Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigência:</p>
+                        <p class="text-slate-600">Pelo menos 1 (um) documento que comprove o vínculo. Exemplos: CTPS, ficha de registro com data de saída, rescisão de contrato, declaração do empregador, FGTS, aviso prévio assinado e carimbado, exame demissional.</p>
+                    `;
+                    break;
                 case 'rural':
                     classesBorda = "bg-amber-50 border-amber-300 text-amber-900";
                     conteudoAjuda = `
@@ -1031,7 +1183,7 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
             // Desmarcar checks de biometria
             const checkBiometria = document.querySelectorAll('input[type="checkbox"]');
             checkBiometria.forEach(chk => {
-                if (chk.id.startsWith('mat-') || chk.id.startsWith('gen-') || chk.id.startsWith('gest-')) {
+                if (chk.id.startsWith('mat-') || checkBiometria.id?.startsWith('gen-') || checkBiometria.id?.startsWith('gest-')) {
                     chk.checked = false;
                 }
             });
@@ -1068,10 +1220,18 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
             document.getElementById('mat-exc-menor').checked = false;
             document.getElementById('mat-exc-rg').checked = false;
             document.getElementById('mat-exc-saida').checked = false;
+            document.getElementById('mat-exc-adocao').checked = false;
+            document.getElementById('mat-exc-presencial').checked = false;
+            document.getElementById('mat-exc-mg').checked = false;
+            document.getElementById('mat-exc-darf').checked = false;
 
             document.getElementById('painel-exc-menor').classList.add('hidden');
             document.getElementById('painel-exc-rg').classList.add('hidden');
             document.getElementById('painel-exc-saida').classList.add('hidden');
+            document.getElementById('painel-exc-adocao').classList.add('hidden');
+            document.getElementById('painel-exc-presencial').classList.add('hidden');
+            document.getElementById('painel-exc-mg').classList.add('hidden');
+            document.getElementById('painel-exc-darf').classList.add('hidden');
 
             esconderEtapaApartir(2);
             selecionarAba('salario-maternidade');
@@ -1108,7 +1268,7 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                 texto += ` - Dados batem com docs: ${chkDados ? "SIM" : "PENDENTE"}\n`;
                 texto += ` - 02 números de recado válidos: ${chkRecados ? "SIM" : "PENDENTE"}\n`;
                 texto += ` - Contrato/Procuração devidamente assinado: ${chkContrato ? "SIM" : "PENDENTE"}\n`;
-                texto += ` - Observações padrão da analista: ${chkObs ? "SIM" : "PENDENTE"}\n\n`;
+                texto += ` - Observações padrão da analista de vendas: ${chkObs ? "SIM" : "PENDENTE"}\n\n`;
 
                 if (tipoCasoMaternidade) {
                     texto += `[ETAPA 2: REQUERIMENTO - ${tipoCasoMaternidade.toUpperCase()}]\n`;
@@ -1143,12 +1303,20 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                 const excMenor = document.getElementById('mat-exc-menor').checked;
                 const excRg = document.getElementById('mat-exc-rg').checked;
                 const excSaida = document.getElementById('mat-exc-saida').checked;
+                const excAdocao = document.getElementById('mat-exc-adocao').checked;
+                const excPresencial = document.getElementById('mat-exc-presencial').checked;
+                const excMg = document.getElementById('mat-exc-mg').checked;
+                const excDarf = document.getElementById('mat-exc-darf').checked;
 
-                if (excMenor || excRg || excSaida) {
+                if (excMenor || excRg || excSaida || excAdocao || excPresencial || excMg || excDarf) {
                     texto += `[ETAPA 4: EXCEÇÕES APLICADAS]\n`;
-                    if (excMenor) texto += ` - Cliente Menor de Idade: Marcado (Identificação e Assinatura do Responsável Legal anexado)\n`;
-                    if (excRg) texto += ` - RG Vencido/Inválido: Marcado (Abertura de protocolo de renovação CIN realizado + print)\n`;
-                    if (excSaida) texto += ` - Saída Recente da Empresa: Marcado (Verificação de rescisão / justa causa efetuada)\n`;
+                    if (excMenor) texto += ` - Cliente Menor de Idade: Sim\n`;
+                    if (excRg) texto += ` - RG Vencido/Inválido: Sim\n`;
+                    if (excSaida) texto += ` - Saída Recente da Empresa: Sim\n`;
+                    if (excAdocao) texto += ` - Adoção: Sim\n`;
+                    if (excPresencial) texto += ` - Presencial (RJ, SC, Montenegro, Caxias): Sim\n`;
+                    if (excMg) texto += ` - Contratos MG: Sim\n`;
+                    if (excDarf) texto += ` - DARF de Complementação: Sim\n`;
                 }
 
             } else {
