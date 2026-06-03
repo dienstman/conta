@@ -1344,7 +1344,7 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                     dadosBen.itens.forEach(item => {
                         const el = document.getElementById(`gen-chk-${item.id}`);
                         const verificado = el && el.checked ? "CONFORME" : "PENDENTE";
-                        texto += ` - ${item.desc.substring(0, 50)}...: [${verificado}]\n`;
+                        texto += ` - ${item.desc.substring(0, 200)}...: [${verificado}]\n`;
                     });
                 }
             }
