@@ -385,7 +385,10 @@
                                 <option value="vinculo-automatico">Direito com vínculo automático</option>
                                 <option value="vinculo-intermitente">Direito com vínculo intermitente fora de convocatória</option>
                                 <option value="vinculo-pext">Direito com vínculo PEXT</option>
-                                <option value="guia-individual">Direito com GUIA Individual (no mês de nascimento)</option>
+                                <option value="gps-darf">GPS e DARFs Pagas pelo Escritório</option>
+                                <option value="facultativo">Casos de contribuinte facultativo</option>
+                                <option value="empregadas">Casos de clientes empregadas</option>
+                                <option value="gps-paga-cliente">GPS paga pela cliente</option>
                                 <option value="sine-seguro">Direito com Sine ou Seguro-Desemprego</option>
                                 <option value="baixa-renda">Caso de baixa renda</option>
                                 <option value="reintegracao">Caso de reintegração</option>
@@ -393,7 +396,7 @@
                                 <option value="mei-cooperativa">Caso de MEI ou Cooperativa</option>
                                 <option value="vinculo-aberto">Caso de vínculo em aberto</option>
                                 <option value="rural">Salário-maternidade rural</option>
-                                <option value="caso-especifico-coord">Casos Específicos (Escritório Paga a GPS ao Cliente)</option>
+                                <option value="darf-complementacao">Casos de DARF de Complementação paga pela cliente</option>
                             </select>
 
                             <!-- Caixa de ajuda condicional dinâmica conforme escolha -->
@@ -663,7 +666,8 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                     { id: "aci-1", desc: "Laudo médico atualizado com indicação de CID e descrição explícita da sequela e incapacidade parcial permanente (conforme nova portaria).", obs: "Apenas redução permanente de capacidade dá direito." },
                     { id: "aci-2", desc: "Caso empregado na época: anexar a Comunicação de Acidente de Trabalho (CAT).", obs: "Fator decisivo para o nexo causal." },
                     { id: "aci-3", desc: "Contrato de honorários e procuração devidamente assinados.", obs: "Conformidade padrão." },
-                    { id: "aci-4", desc: "Exames de imagem, relatórios, resumo de alta e históricos de acompanhamentos (como prontuários de fisioterapia).", obs: "Auxilia na comprovação da cronologia da lesão." }
+                    { id: "aci-4", desc: "Ciente da perícia médica.", obs: "Cliente está ciente que precisa comparecer a perícia médica." },
+                    { id: "aci-5", desc: "Exames de imagem, relatórios, resumo de alta e históricos de acompanhamentos (como prontuários de fisioterapia).", obs: "Auxilia na comprovação da cronologia da lesão." }
                 ]
             },
             'auxilio-doenca': {
@@ -673,7 +677,10 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                     { id: "doe-1", desc: "Laudo médico atualizado com CID recente, solicitando expressamente o afastamento das atividades laborais (conforme nova portaria).", obs: "Atenção ao prazo sugerido de afastamento." },
                     { id: "doe-2", desc: "Contrato físico e procuração assinados (obrigatório se a estimativa de concessão for maior que 180 dias).", obs: "Conformidade exigida pelo escritório." },
                     { id: "doe-3", desc: "Caso de Doença Crônica: anexar laudos anteriores, exames históricos de acompanhamento e evolução.", obs: "Demonstra o desenvolvimento da incapacidade ao longo do tempo." },
-                    { id: "doe-4", desc: "Se empregado ativo: solicitar e anexar o DUT (Declaração de Último Dia de Trabalho) junto à empresa.", obs: "Fundamental para fixar o início do benefício." }
+                    { id: "doe-4", desc: "Ciente da perícia médica.", obs: "Cliente está ciente que precisa comparecer a perícia médica." },
+                    { id: "doe-5", desc: "Preencher sintomas e informações profissionais conforme checklist inicial.", obs: "Checklist sobre os sintomas e profissiografia para auxilio doença." },
+                    { id: "doe-6", desc: "Se empregado ativo: solicitar se recebe salário família.", obs: "Confirmar se o cliente tem recebimento de salário família." },
+                    { id: "doe-7", desc: "Se empregado ativo: solicitar e anexar o DUT (Declaração de Último Dia de Trabalho) junto à empresa.", obs: "Fundamental para fixar o início do benefício." }
                 ]
             },
             'pensao-morte': {
@@ -1052,11 +1059,52 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                         <p class="text-slate-600 mt-1">Necessita da documentação do vínculo para comprovação (Ex: 3 documentos conforme Art. 48 da IN 128/2022, tais como carteira de trabalho, rescisão ou contracheques).</p>
                     `;
                     break;
-                case 'guia-individual':
+                case 'gps-darf':
                     classesBorda = "bg-sky-50 border-sky-200 text-sky-950";
                     conteudoAjuda = `
-                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4 text-sky-600"></i> GUIA Individual Selecionado</div>
-                        <p class="text-slate-600 mt-1">Como o direito advém de guia individual quitada no mês de nascimento, certifique-se de que o comprovante de pagamento esteja estritamente em dia.</p>
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i> GPS e DARFs Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="text-slate-600 mt-2 list-disc pl-5 space-y-1">
+        <li>Aditivo de contrato assinado por IP, presencial ou MG: assinado fisicamente.</li>
+        <li>GPS anexada, quando for possível gerar a guia dentro do ano atual.</li>
+        <li>Print do envio do aditivo para a cliente pelo WhatsApp.</li>
+        <li>Ciente da cliente sobre o pagamento realizado pelo escritório.</li>
+        <li>Quando for previsto longo (+60 dias): anexar o áudio da ligação de finalização.</li>
+        <li>Quando a guia for paga pelo malote do Comercial: obrigatoriamente anexar observação da Tainara ou do Darlan.</li>
+    </ul>
+                    `;
+                    break;
+                case 'facultativo':
+                    classesBorda = "bg-blue-50 border-blue-200 text-blue-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i> Contribuinte Facultativo Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Conferir vínculos em aberto no CNIS que possam gerar concomitância. Havendo vínculo em aberto, solicitar e anexar a documentação necessária para o fechamento do vínculo antes da validação da guia.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'empregadas':
+                    classesBorda = "bg-blue-50 border-blue-200 text-blue-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i> Empregadas Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Conferir se a guia gerada, é concomitantemente ao fato gerador.</li>
+                            <li>Verificar se a cliente possui requerimento de auxílio doença em andamento. Se houver, ficha segue como teste, pois para validação da guia, cliente precisa ter pelo menos 1 dia disponível dentro da competência para o recolhimento, e não temos como prever a data fim do benefício.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'gps-paga-cliente':
+                    classesBorda = "bg-blue-50 border-blue-200 text-blue-900";
+                    conteudoAjuda = `
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i> GPS paga pela cliente Selecionado</div>
+                        <p class="text-slate-700 mt-1 font-semibold">Exigências:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            <li>Comprovante de pagamento anexado.</li>
+                            <li>GPS anexada.</li>
+                            <li>Caso a cliente não pague no momento e nos passe uma previsão de pagamento que não seja dentro do mês atual, aceitar com o ciente da cliente e a previsão de pagamento. .</li>
+                        </ul>
                     `;
                     break;
                 case 'sine-seguro':
@@ -1136,11 +1184,14 @@ Complete a checagem das etapas para gerar o resumo de conformidade.
                         </div>
                     `;
                     break;
-                case 'caso-especifico-coord':
+                case 'darf-complementacao':
                     classesBorda = "bg-rose-50 border-rose-200 text-rose-950";
                     conteudoAjuda = `
-                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="shield" class="w-4 h-4 text-rose-600"></i> Casos Específicos da Coordenação</div>
-                        <p class="text-slate-600 mt-1">Casos específicos em que o escritório assume o pagamento ao cliente. Obrigatoriamente deve conter observações da coordenação sinalizando ciência de caso.</p>
+                        <div class="font-bold flex items-center gap-1.5"><i data-lucide="shield" class="w-4 h-4 text-rose-600"></i> Casos de DARF de Complementação paga pela cliente selecionado</div>
+                        <p class="text-slate-600 mt-1">DARF anexada e print de envio para a cliente.</p>
+                        <p class="text-slate-600 mt-1">Ciente da complementação.</p>
+                        <p class="text-slate-600 mt-1">Previsão de pagamento.</p>
+                        <p class="text-slate-600 mt-1">Quando o cadastro exigir ajuste (para reduzir valor da DARF ou casos de cooperativa), gerar e enviar no grupo, mas o ciente da cliente já deve estar anexado no processo. Após aguardar print de envio.</p>
                     `;
                     break;
             }
